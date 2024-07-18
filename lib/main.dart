@@ -31,6 +31,10 @@ void main() async {
       styles: styles,
       head: [
         link(rel: 'manifest', href: 'manifest.json'),
+        link(href: 'styles.css', rel: 'stylesheet'),
+        script([],
+            src:
+                "https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js")
       ],
       body: App(),
     ));
