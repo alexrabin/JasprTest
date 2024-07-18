@@ -1,0 +1,4 @@
+services:
+  jaspr_site:
+    build:
+      dockerfile: ./Dockerfile
