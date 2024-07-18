@@ -10,6 +10,19 @@ COPY . .
 
 # Resolve app dependencies.
 RUN rm -f pubspec_overrides.yaml
+
+RUN useradd -ms /bin/bash developer
+
+RUN chown -R developer:developer /usr/local/bin
+RUN chmod 755 /usr/local/bin
+RUN chown -R developer:developer /app
+RUN chmod 755 /app
+
+RUN chown -R developer:developer /sdks/flutter
+RUN chmod 755 /sdks/flutter
+
+USER developer
+
 RUN dart pub get
 RUN dart pub global activate jaspr_cli
 
@@ -22,7 +35,6 @@ FROM dart:stable AS dart
 FROM scratch
 
 COPY --from=dart /runtime/ /
-
 COPY --from=build /app/build/jaspr/ /app/
 
 WORKDIR /app
