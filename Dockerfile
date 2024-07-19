@@ -37,7 +37,8 @@ FROM dart:stable AS dart
 FROM scratch
 
 COPY --from=dart /runtime/ /
-COPY --from=build /app/build/jaspr/ /app/
+COPY --from=build /app/build/jaspr/app /app/app
+COPY --from=build /app/build/jaspr/web /app/web/
 
 WORKDIR /app
 
