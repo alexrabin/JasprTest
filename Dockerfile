@@ -23,6 +23,8 @@ RUN chmod 755 /sdks/flutter
 
 USER developer
 
+RUN flutter doctor -v
+
 RUN dart pub get
 RUN dart pub global activate jaspr_cli
 
