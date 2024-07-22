@@ -5,12 +5,14 @@ RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/downlo
 RUN chmod +x tailwindcss-linux-x64
 RUN mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 
-WORKDIR /app
-COPY . .
-
 # Resolve app dependencies.
+WORKDIR /app
+COPY . /app
+WORKDIR /app
+
 RUN rm -f pubspec_overrides.yaml
 
+# Must build the app as a non root user.
 RUN useradd -ms /bin/bash developer
 
 RUN chown -R developer:developer /usr/local/bin
@@ -23,6 +25,7 @@ RUN chmod 755 /sdks/flutter
 
 USER developer
 
+# Must run flutter doctor to download the web sdk.
 RUN flutter doctor -v
 
 RUN dart pub get
