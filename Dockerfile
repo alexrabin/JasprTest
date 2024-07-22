@@ -1,5 +1,7 @@
 FROM ghcr.io/cirruslabs/flutter:stable AS build
 
+RUN touch /.dockerenv
+
 # Setup Tailwind CSS
 RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64
 RUN chmod +x tailwindcss-linux-x64
@@ -7,8 +9,8 @@ RUN mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 
 # Resolve app dependencies.
 WORKDIR /app
-COPY . /app
-WORKDIR /app
+COPY . .
+
 
 RUN rm -f pubspec_overrides.yaml
 
