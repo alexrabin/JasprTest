@@ -7,20 +7,20 @@ RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/downlo
 RUN chmod +x tailwindcss-linux-x64
 RUN mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 
-# Resolve app dependencies.
-WORKDIR /app
+# Resolve workspace dependencies.
+WORKDIR /workspace
 COPY . .
 
 
 RUN rm -f pubspec_overrides.yaml
 
-# Must build the app as a non root user.
+# Must build the workspace as a non root user.
 RUN useradd -ms /bin/bash developer
 
-RUN chown -R developer:developer /usr
-RUN chmod 755 /usr
-RUN chown -R developer:developer /app
-RUN chmod 755 /app
+RUN chown -R developer:developer /usr/local/bin
+RUN chmod 755 /usr/local/bin
+RUN chown -R developer:developer /workspace
+RUN chmod 755 /workspace
 
 RUN chown -R developer:developer /sdks/flutter
 RUN chmod 755 /sdks/flutter
@@ -42,9 +42,9 @@ FROM dart:stable AS dart
 FROM scratch
 
 COPY --from=dart /runtime/ /
-COPY --from=build /app/build/jaspr/ /app/
+COPY --from=build /workspace/build/jaspr/ /workspace/
 
-WORKDIR /app
+WORKDIR /workspace
 
 # Start server.
 EXPOSE 8080
