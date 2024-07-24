@@ -17,8 +17,8 @@ RUN rm -f pubspec_overrides.yaml
 # Must build the app as a non root user.
 RUN useradd -ms /bin/bash developer
 
-RUN chown -R developer:developer /usr/local/bin
-RUN chmod 755 /usr/local/bin
+RUN chown -R developer:developer /usr
+RUN chmod 755 /usr
 RUN chown -R developer:developer /app
 RUN chmod 755 /app
 
