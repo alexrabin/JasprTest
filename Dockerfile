@@ -9,6 +9,7 @@ COPY . .
 
 RUN npm install
 
+COPY . .
 
 FROM ghcr.io/cirruslabs/flutter:stable AS build
 
