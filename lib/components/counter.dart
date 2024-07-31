@@ -19,22 +19,17 @@ class _CounterState extends State<Counter> {
   @override
   Iterable<Component> build(BuildContext context) sync* {
     yield div(classes: 'counter', [
-      button(
-        onClick: () {
-          setState(() => count--);
-        },
-        [text('-')],
-      ),
+      plusMinusButton(
+          title: "-",
+          onClick: () {
+            setState(() => count--);
+          }),
       span([text('$count')]),
-      button(
-        attributes: {'data-ripple-light': 'true'},
-        classes:
-            "middle none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none",
-        onClick: () {
-          setState(() => count++);
-        },
-        [text('+')],
-      ),
+      plusMinusButton(
+          title: "+",
+          onClick: () {
+            setState(() => count++);
+          }),
     ]);
 
     yield FlutterCounter(
@@ -42,6 +37,17 @@ class _CounterState extends State<Counter> {
       onChange: (value) {
         setState(() => count = value);
       },
+    );
+  }
+
+  Component plusMinusButton(
+      {required String title, required void Function() onClick}) {
+    return button(
+      attributes: {'data-ripple-light': 'true'},
+      classes:
+          "select-none middle none rounded-lg bg-blue-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none",
+      onClick: onClick,
+      [text(title)],
     );
   }
 
