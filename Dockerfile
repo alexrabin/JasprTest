@@ -1,20 +1,22 @@
-# Use a Node.js-based image as the base
-FROM node:18-alpine AS nodeBuild
-
-RUN apk add --no-cache git curl
-
-# Setup working directory
-WORKDIR /app
-COPY . .
-
-RUN npm install
-
-COPY . .
-
 FROM ghcr.io/cirruslabs/flutter:stable AS build
 
 WORKDIR /app
 COPY . .
+
+ENV NODE_VERSION=20.13.1
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+ENV NVM_DIR=/root/.nvm
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+RUN node --version
+RUN npm --version
+
+RUN npm i
+
+COPY . .
+
 # Setup Tailwind CSS
 RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64
 RUN chmod +x tailwindcss-linux-x64
@@ -52,8 +54,7 @@ FROM scratch
 
 COPY --from=dart /runtime/ /
 COPY --from=build /app/build/jaspr/ /app/
-COPY --from=nodeBuild /app/node_modules/ /app/node_modules/
-COPY --from=build /usr/local/bin/tailwindcss /usr/local/bin/tailwindcss
+
 WORKDIR /app
 
 # Start server.
