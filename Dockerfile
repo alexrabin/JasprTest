@@ -52,6 +52,7 @@ FROM scratch
 COPY --from=dart /runtime/ /
 COPY --from=build /app/build/jaspr/ /app/
 COPY --from=nodeBuild /app/node_modules/ /app/node_modules/
+COPY --from=build /usr/local/bin/tailwindcss /usr/local/bin/tailwindcss
 WORKDIR /app
 
 # Start server.
